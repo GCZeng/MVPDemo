@@ -16,15 +16,15 @@ import io.reactivex.schedulers.Schedulers;
 import zgc.mvpdemo.app.APP;
 import zgc.mvpdemo.model.GankDataModel;
 import zgc.mvpdemo.model.entity.GankData;
-import zgc.mvpdemo.presenter.base.BasePresenter;
 import zgc.mvpdemo.service.ApiService;
 import zgc.mvpdemo.ui.adapter.HomeAdapter;
 import zgc.mvpdemo.ui.contract.HomeContract;
+import zgc.mvpdemo.util.LogUtil;
 
 /**
  * Created by Nick on 2017/1/7
  */
-public class HomePresenter extends BasePresenter implements HomeContract.Presenter {
+public class HomePresenter implements HomeContract.Presenter {
     private HomeContract.View view;
 
     @Inject ApiService apiService;
@@ -34,8 +34,19 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
     private List<GankData> mHomeList = null;
     private HomeAdapter mHomeAdapter = null;
 
+    @Inject
+    public HomePresenter(HomeContract.View view,Context context) {
+        this.view = view;
+
+        mHomeList = new ArrayList<>();
+        mHomeAdapter = new HomeAdapter(mHomeList,context);
+
+        view.setAdapter(mHomeAdapter);
+    }
+
     @Override
     public void loadGankData(boolean clean) {
+        LogUtil.d("loadGankData");
         Observable.zip(apiService.getPicList(APP.pagesize, mPage),
                 apiService.getVideoList(APP.pagesize, mPage),
                 this::createHomeData)
@@ -70,14 +81,6 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
                 });
     }
 
-    @Inject
-    public HomePresenter(HomeContract.View view, Context context) {
-        this.view = view;
-
-        mHomeList = new ArrayList<>();
-        mHomeAdapter = new HomeAdapter(mHomeList,context);
-        view.setAdapter(mHomeAdapter);
-    }
 
     private GankDataModel createHomeData(GankDataModel picDataModel, GankDataModel videoDataModel) {
         for (int i = 0; i < picDataModel.getResults().size(); i++) {
@@ -88,4 +91,5 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
         }
         return picDataModel;
     }
+
 }

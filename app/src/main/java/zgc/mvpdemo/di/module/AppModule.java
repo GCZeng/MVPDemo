@@ -6,5 +6,7 @@ import dagger.Module;
  * Created by Nick on 2017/12/1
  */
 @Module
-public class AppModule {
+public abstract class AppModule {
+//    @Binds
+//    abstract Context bindContext(Application application);
 }

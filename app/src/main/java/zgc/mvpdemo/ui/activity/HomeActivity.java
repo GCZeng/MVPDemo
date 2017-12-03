@@ -60,6 +60,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View{
     protected void initData() {
         rl_list.setRefreshing(true);
         mHomePresenter.loadGankData(true);
+
     }
 
     @Override

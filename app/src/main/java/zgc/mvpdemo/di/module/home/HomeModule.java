@@ -5,6 +5,7 @@ import android.content.Context;
 
 import dagger.Binds;
 import dagger.Module;
+import zgc.mvpdemo.di.scope.ActivityScoped;
 import zgc.mvpdemo.ui.activity.HomeActivity;
 import zgc.mvpdemo.ui.contract.HomeContract;
 
@@ -34,9 +35,14 @@ public abstract class HomeModule {
 //            Retrofit2
 //    OKHttp3
 
+    @ActivityScoped
     @Binds
     public abstract HomeContract.View provideHomeContractView(HomeActivity homeActivity);
 
     @Binds
     public abstract Context provideHomeActivityContext(HomeActivity homeActivity);
+
+//    @ActivityScoped
+//    @Binds
+//    abstract HomeContract.Presenter homePresenter(HomePresenter homePresenter);
 }

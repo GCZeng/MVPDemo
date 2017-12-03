@@ -6,8 +6,8 @@ import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 import zgc.mvpdemo.app.APP;
+import zgc.mvpdemo.di.module.ActivityBindingModule;
 import zgc.mvpdemo.di.module.AppModule;
-import zgc.mvpdemo.di.module.BuildersModule;
 import zgc.mvpdemo.di.module.NetworkModule;
 
 /**
@@ -17,7 +17,7 @@ import zgc.mvpdemo.di.module.NetworkModule;
 @Component(modules = {
         AppModule.class,
         NetworkModule.class,
-        BuildersModule.class,
+        ActivityBindingModule.class,
         AndroidSupportInjectionModule.class
 })
 public interface AppComponent extends AndroidInjector<APP>{
