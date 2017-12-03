@@ -8,10 +8,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import zgc.mvpdemo.app.APP;
 import zgc.mvpdemo.model.GankDataModel;
@@ -19,7 +17,6 @@ import zgc.mvpdemo.model.entity.GankData;
 import zgc.mvpdemo.service.ApiService;
 import zgc.mvpdemo.ui.adapter.HomeAdapter;
 import zgc.mvpdemo.ui.contract.HomeContract;
-import zgc.mvpdemo.util.LogUtil;
 
 /**
  * Created by Nick on 2017/1/7
@@ -35,50 +32,31 @@ public class HomePresenter implements HomeContract.Presenter {
     private HomeAdapter mHomeAdapter = null;
 
     @Inject
-    public HomePresenter(HomeContract.View view,Context context) {
+    public HomePresenter(HomeContract.View view, Context context) {
         this.view = view;
 
         mHomeList = new ArrayList<>();
-        mHomeAdapter = new HomeAdapter(mHomeList,context);
+        mHomeAdapter = new HomeAdapter(mHomeList, context);
 
         view.setAdapter(mHomeAdapter);
     }
 
     @Override
     public void loadGankData(boolean clean) {
-        LogUtil.d("loadGankData");
-        Observable.zip(apiService.getPicList(APP.pagesize, mPage),
+        Flowable.zip(apiService.getPicList(APP.pagesize, mPage),
                 apiService.getVideoList(APP.pagesize, mPage),
                 this::createHomeData)
                 .map(gankDataModel -> gankDataModel.getResults())
-//                .flatMap(Observable::from)
-//                .toSortedList((gankData, gankData2) -> gankData2.getPublishedAt().compareTo(gankData.getPublishedAt()))
+                .flatMap(Flowable::fromIterable)
+                .toSortedList((o1, o2) -> o1.getPublishedAt().compareTo(o2.getPublishedAt()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<GankData>>() {
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<GankData> gankDatas) {
-                        if (clean) mHomeList.clear();
-                        mHomeList.addAll(gankDatas);
-                        mHomeAdapter.notifyDataSetChanged();
-                        view.refreshComplete();
-                    }
-                });
+                .subscribe(gankData -> {
+                    if (clean) mHomeList.clear();
+                    mHomeList.addAll(gankData);
+                    mHomeAdapter.notifyDataSetChanged();
+                    view.refreshComplete();
+                },Throwable::printStackTrace);
     }
 
 

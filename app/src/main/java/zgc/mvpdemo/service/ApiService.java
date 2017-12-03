@@ -1,7 +1,7 @@
 package zgc.mvpdemo.service;
 
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import zgc.mvpdemo.model.GankDataModel;
@@ -17,7 +17,7 @@ public interface ApiService {
      * @return
      */
     @GET("data/福利/{pagesize}/{page}")
-    Observable<GankDataModel> getPicList(@Path("pagesize") int pagesize, @Path("page") int page);
+    Flowable<GankDataModel> getPicList(@Path("pagesize") int pagesize, @Path("page") int page);
 
     /**
      * 获取休息视频列表
@@ -26,5 +26,5 @@ public interface ApiService {
      * @return
      */
     @GET("data/休息视频/{pagesize}/{page}")
-    Observable<GankDataModel> getVideoList(@Path("pagesize") int pagesize, @Path("page") int page);
+    Flowable<GankDataModel> getVideoList(@Path("pagesize") int pagesize, @Path("page") int page);
 }
