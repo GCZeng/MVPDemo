@@ -27,7 +27,7 @@ public class LogUtil {
                 .tag(TAG)   // (Optional) Global tag for every log. Default PRETTY_LOGGER
                 .build();
 
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy){
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
             @Override
             public boolean isLoggable(int priority, String tag) {
                 return isDebug;
@@ -76,6 +76,17 @@ public class LogUtil {
     }
 
     public static void json(String json) {
+        Logger.json(json);
+    }
+
+    public static void json(Object object) {
+        String json;
+        try {
+            json = JSONUtil.toJson(object);
+        } catch (Exception e) {
+            json = object.toString();
+            e.printStackTrace();
+        }
         Logger.json(json);
     }
 

@@ -2,14 +2,14 @@ package zgc.mvpdemo.ui.contract;
 
 import android.support.v7.widget.RecyclerView;
 
-import zgc.mvpdemo.presenter.base.BasePresenter;
-import zgc.mvpdemo.ui.contract.base.BaseView;
+import zgc.mvpdemo.presenter.base.IBasePresenter;
+import zgc.mvpdemo.ui.contract.base.IBaseView;
 
 /**
  * Created by Nick on 2017/1/7
  */
 public class HomeContract {
-    public interface View extends BaseView<Presenter>{
+    public interface View extends IBaseView<Presenter> {
 
         /**
          * 设置适配器
@@ -23,11 +23,11 @@ public class HomeContract {
          */
         void refreshComplete();
 
+        RecyclerView getRefreshView();
+
     }
 
-    public interface Presenter extends BasePresenter<View>  {
-
-        void loadGankData(boolean clean);
+    public interface Presenter extends IBasePresenter<View> {
     }
 
 }

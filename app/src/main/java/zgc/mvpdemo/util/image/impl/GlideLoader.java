@@ -1,6 +1,7 @@
 package zgc.mvpdemo.util.image.impl;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.bumptech.glide.annotation.GlideModule;
@@ -10,30 +11,66 @@ import com.bumptech.glide.module.AppGlideModule;
 import javax.inject.Inject;
 
 import zgc.mvpdemo.util.image.ILoader;
+import zgc.mvpdemo.util.image.ImageLoader;
+import zgc.mvpdemo.util.image.ImageManager;
 
 /**
  * Created by Nick on 2017/12/2
  */
 @GlideModule
 public class GlideLoader extends AppGlideModule implements ILoader {
-
     @Inject
     public GlideLoader() {
-
     }
 
     @Override
     public void load(Context context, String url, ImageView imageView) {
-//        Glide.with(context).load(url).into(imageView);
-        load(context,url,imageView,-1);
+        load(context, url, imageView, -1, null);
     }
 
     @Override
     public void load(Context context, String url, ImageView imageView, int placeHolder) {
-        GlideApp.with(context)
-                .load(url)
-                .placeholder(placeHolder)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView);
+        load(context, url, imageView, placeHolder, null);
     }
+
+    @Override
+    public void load(Context context, String url, ImageView imageView, ImageManager.ScaleType scaleType) {
+        load(context, url, imageView, -1, scaleType);
+    }
+
+    @Override
+    public void load(Context context, String url, ImageView imageView, int placeHolder, ImageManager.ScaleType scaleType) {
+
+        GlideRequest glideRequest = getGlideRequest(context, url, placeHolder, scaleType);
+
+        glideRequest.into(imageView);
+    }
+
+    @NonNull
+    private GlideRequest getGlideRequest(Context context, String url, int placeHolder, ImageManager.ScaleType scaleType) {
+        GlideRequest glideRequest = GlideApp.with(context)
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+        glideRequest.placeholder(placeHolder > 0 ? placeHolder : ImageLoader.mDefaultPlaceHolder);
+
+        if (scaleType != null) {
+            switch (scaleType) {
+                case CENTER_CROP:
+                    glideRequest.centerCrop();
+                    break;
+                case CENTER_INSIDE:
+                    glideRequest.centerInside();
+                    break;
+                case FIT_CENTER:
+                    glideRequest.fitCenter();
+                    break;
+                case CIRCLY_CROP:
+                    glideRequest.circleCrop();
+                    break;
+            }
+        }
+        return glideRequest;
+    }
+
 }

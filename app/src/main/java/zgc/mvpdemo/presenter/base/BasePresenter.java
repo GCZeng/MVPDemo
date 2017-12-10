@@ -1,21 +1,28 @@
 package zgc.mvpdemo.presenter.base;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
 /**
- * Base Presenter
- * Created by Nick on 2017/1/6
+ * Created by Nick on 2017/12/7
  */
-public interface BasePresenter<T> {
+public class BasePresenter {
+    protected Activity mActivity;
 
-//    /**
-//     * Binds presenter with a view when resumed. The Presenter will perform initialization here.
-//     *
-//     * @param view the view associated with this presenter
-//     */
-//    void takeView(T view);
-//
-//    /**
-//     * Drops the reference to the view when destroyed
-//     */
-//    void dropView();
+    public BasePresenter(Activity context) {
+        this.mActivity = context;
+    }
 
+    protected void goAct(Class clazz) {
+        goAct(clazz, null);
+    }
+
+    protected void goAct(Class clazz, Bundle bundle) {
+        Intent intent = new Intent(mActivity, clazz);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        mActivity.startActivity(intent);
+    }
 }

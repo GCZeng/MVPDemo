@@ -18,8 +18,8 @@ public class ImageManager {
     public static class Builder {
         private Context mContext;
         private String mUrl;
-        private ImageView mImageView;
         private int mPlaceHolder;
+        private ScaleType scaleType;
 
         public Builder(Context context) {
             this.mContext = context;
@@ -35,11 +35,34 @@ public class ImageManager {
             return this;
         }
 
-        public void into(ImageView imageView) {
-            this.mImageView = imageView;
+        /**
+         *
+         * @param scaleType
+         * @return
+         */
+        public Builder scaleType(ScaleType scaleType) {
+            this.scaleType = scaleType;
+            return this;
+        }
 
-            mILoader.load(mContext, mUrl, imageView,mPlaceHolder);
+        public void into(ImageView imageView) {
+
+            mILoader.load(mContext, mUrl, imageView, mPlaceHolder,scaleType);
         }
 
     }
+
+    public enum ScaleType {
+        FIT_CENTER  (0),
+        CENTER_CROP (1),
+        CENTER_INSIDE (2),
+        CIRCLY_CROP (3);
+
+
+        ScaleType(int ni) {
+            nativeInt = ni;
+        }
+        final int nativeInt;
+    }
+
 }

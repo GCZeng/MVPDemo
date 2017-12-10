@@ -1,0 +1,34 @@
+package zgc.mvpdemo.presenter.home;
+
+import android.app.Activity;
+
+import javax.inject.Inject;
+
+import zgc.mvpdemo.presenter.base.BasePresenter;
+import zgc.mvpdemo.ui.contract.PhotoViewContract;
+import zgc.mvpdemo.util.LogUtil;
+import zgc.mvpdemo.util.image.ImageLoader;
+
+/**
+ * Created by Nick on 2017/12/7
+ */
+public class PhotoViewPresenter extends BasePresenter implements PhotoViewContract.Presenter {
+    private PhotoViewContract.View view = null;
+
+    public static String PHOTO_URL = "photo_url";
+
+    @Inject
+    public PhotoViewPresenter(PhotoViewContract.View view, Activity activity) {
+        super(activity);
+        this.view = view;
+    }
+
+
+    @Override
+    public void showPhoto() {
+        LogUtil.d(mActivity.getIntent().getStringExtra(PHOTO_URL));
+        ImageLoader.with(mActivity)
+                .url(mActivity.getIntent().getStringExtra(PHOTO_URL))
+                .into(view.getPhotoView());
+    }
+}

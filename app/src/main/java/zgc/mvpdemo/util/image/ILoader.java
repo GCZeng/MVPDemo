@@ -9,5 +9,9 @@ import android.widget.ImageView;
 public interface ILoader {
     void load(Context context, String url, ImageView imageView);
 
-    void load(Context context, String url, ImageView imageView,int placeHolder);
+    void load(Context context, String url, ImageView imageView, int placeHolder);
+
+    void load(Context context, String url, ImageView imageView, ImageManager.ScaleType scaleType);
+
+    void load(Context context, String url, ImageView imageView, int placeHolder, ImageManager.ScaleType scaleType);
 }

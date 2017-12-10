@@ -29,3 +29,5 @@
   public *;
 }
 -keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
+-keep public class  extends com.bumptech.glide.module.AppGlideModule
+-keep class com.bumptech.glide.GeneratedAppGlideModuleImpl

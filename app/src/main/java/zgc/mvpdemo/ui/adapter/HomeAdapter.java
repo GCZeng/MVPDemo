@@ -42,7 +42,6 @@ public class HomeAdapter extends BaseAdapter<HomeAdapter.MyViewHolder> {
 
         ImageLoader.with(mContext)
                 .url(gankData.getUrl())
-                .placeHolder(R.mipmap.pic_placeholder)
                 .into(holder.iv_pic);
     }
 

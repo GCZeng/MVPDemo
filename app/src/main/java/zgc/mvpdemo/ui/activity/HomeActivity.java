@@ -8,22 +8,24 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
 import zgc.mvpdemo.R;
 import zgc.mvpdemo.presenter.home.HomePresenter;
 import zgc.mvpdemo.ui.activity.base.BaseActivity;
 import zgc.mvpdemo.ui.adapter.decoration.HomeItemDecoration;
 import zgc.mvpdemo.ui.contract.HomeContract;
-import zgc.mvpdemo.util.ToastUtil;
 import zgc.mvpdemo.widget.refreshlist.RefreshList;
 
 /**
  * Created by Nick on 2017/12/1
  */
-public class HomeActivity extends BaseActivity implements HomeContract.View{
+public class HomeActivity extends BaseActivity implements HomeContract.View {
     @BindView(R.id.rl_list) RefreshList rl_list;
     @BindView(R.id.rv_list) RecyclerView rv_list;
 
     @Inject HomePresenter mHomePresenter;
+
+    @Inject OkHttpClient mOkHttpClient;
 
     @Override
     protected int provideContentViewId() {
@@ -34,9 +36,10 @@ public class HomeActivity extends BaseActivity implements HomeContract.View{
     protected void initView() {
         ButterKnife.bind(this);
 
+        setTitle(R.string.app_name);
+
         rl_list.refresh(() -> {
-            ToastUtil.showShort("刷新");
-            mHomePresenter.loadGankData(true);
+            mHomePresenter.refresh();
         });
 
         // 这句话是为了，第一次进入页面的时候显示加载进度条
@@ -45,14 +48,25 @@ public class HomeActivity extends BaseActivity implements HomeContract.View{
                         .getDisplayMetrics()));
 
         //设置布局管理器
-        rv_list.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        rv_list.setLayoutManager(layoutManager);
+
+        rv_list.addItemDecoration(new HomeItemDecoration(this));
+        rv_list.setPadding(0, 0, 0, 0);
+        rv_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                layoutManager.invalidateSpanAssignments();
+            }
+        });
+
 
         //设置adapter
         rv_list.setHasFixedSize(true);
 
-
         //间隔
-        rv_list.addItemDecoration(new HomeItemDecoration(this));
+//        rv_list.addItemDecoration(new HomeItemDecoration(this));
 
     }
 
@@ -72,4 +86,10 @@ public class HomeActivity extends BaseActivity implements HomeContract.View{
     public void refreshComplete() {
         rl_list.refreshComplete();
     }
+
+    @Override
+    public RecyclerView getRefreshView() {
+        return rv_list;
+    }
+
 }

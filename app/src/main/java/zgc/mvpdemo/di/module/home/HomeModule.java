@@ -1,7 +1,7 @@
 package zgc.mvpdemo.di.module.home;
 
 
-import android.content.Context;
+import android.app.Activity;
 
 import dagger.Binds;
 import dagger.Module;
@@ -40,7 +40,7 @@ public abstract class HomeModule {
     public abstract HomeContract.View provideHomeContractView(HomeActivity homeActivity);
 
     @Binds
-    public abstract Context provideHomeActivityContext(HomeActivity homeActivity);
+    public abstract Activity provideHomeActivity(HomeActivity homeActivity);
 
 //    @ActivityScoped
 //    @Binds

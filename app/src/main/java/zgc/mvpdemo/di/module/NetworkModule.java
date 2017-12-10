@@ -8,13 +8,13 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import zgc.mvpdemo.app.API;
 import zgc.mvpdemo.service.ApiService;
 import zgc.mvpdemo.util.LogUtil;
+import zgc.mvpdemo.util.http.HttpLogInterceptor;
 
 /**
  * Created by Nick on 2017/1/4
@@ -29,7 +29,10 @@ public class NetworkModule {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(60 * 1000, TimeUnit.MILLISECONDS)
                 .readTimeout(60 * 1000, TimeUnit.MILLISECONDS)
-                .addInterceptor(new HttpLoggingInterceptor(message -> LogUtil.d(message)))
+//                .addInterceptor(new HttpLoggingInterceptor(message -> LogUtil.d(message))
+//                        .setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addInterceptor(new HttpLogInterceptor(message -> LogUtil.d(message))
+                    .setLevel(HttpLogInterceptor.Level.BODY))
                 .build();
 
 
@@ -43,7 +46,8 @@ public class NetworkModule {
                 .baseUrl(API.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(client).build();
+                .client(client)
+                .build();
         return retrofit;
     }
 
