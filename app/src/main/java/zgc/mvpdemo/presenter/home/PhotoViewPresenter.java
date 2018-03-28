@@ -24,11 +24,11 @@ public class PhotoViewPresenter extends BasePresenter implements PhotoViewContra
 
 
     @Override
-    public void showPhoto() {
-//        LogUtil.d(mActivity.getIntent().getStringExtra(PHOTO_URL));
-//        ImageLoader.with(mActivity)
-//                .url(mActivity.getIntent().getStringExtra(PHOTO_URL))
-//                .into(view.getPhotoView());
+    public void showPhoto(Activity activity,String url) {
+        LogUtil.d(url);
+        ImageLoader.with(activity)
+                .url(url)
+                .into(view.getPhotoView());
     }
 
     @Override

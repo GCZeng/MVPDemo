@@ -27,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract void initData();
 
-    protected boolean isLoadData = false;//用于判断页面是否加载过一次数据
+    protected boolean isFirstLoadData = true;//用于判断页面是否加载过一次数据
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -3,6 +3,11 @@ package zgc.mvpdemo.presenter.home;
 
 import android.os.Bundle;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.launcher.ARouter;
+
+import junit.framework.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,9 +101,13 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
         mHomeAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             switch (view.getId()) {
                 case R.id.iv_pic:
-                    Bundle bundle = new Bundle();
-                    bundle.putString(PhotoViewPresenter.PHOTO_URL, mHomeList.get(position).getUrl());
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString(PhotoViewPresenter.PHOTO_URL, mHomeList.get(position).getUrl());
 //                    goAct(PhotoViewActivity.class, bundle);
+
+                    ARouter.getInstance().build("/util/PhotoViewActivity")
+                            .withString(PhotoViewPresenter.PHOTO_URL, mHomeList.get(position).getUrl())
+                            .navigation();
                     break;
             }
         });

@@ -1,5 +1,7 @@
 package zgc.mvpdemo.ui.contract;
 
+import android.app.Activity;
+
 import com.github.chrisbanes.photoview.PhotoView;
 
 import zgc.mvpdemo.presenter.base.IBasePresenter;
@@ -14,7 +16,7 @@ public class PhotoViewContract {
     }
 
     public interface Presenter extends IBasePresenter<View> {
-        void showPhoto();
+        void showPhoto(Activity activity, String url);
     }
 
 }

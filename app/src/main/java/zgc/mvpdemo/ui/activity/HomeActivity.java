@@ -13,6 +13,7 @@ import zgc.mvpdemo.presenter.home.HomePresenter;
 import zgc.mvpdemo.ui.activity.base.BaseDiActivity;
 import zgc.mvpdemo.ui.adapter.decoration.HomeItemDecoration;
 import zgc.mvpdemo.ui.contract.HomeContract;
+import zgc.mvpdemo.util.LogUtil;
 import zgc.mvpdemo.widget.refreshlist.RefreshList;
 
 /**
@@ -99,8 +100,8 @@ public class HomeActivity extends BaseDiActivity implements HomeContract.View {
     protected void onResume() {
         super.onResume();
         mHomePresenter.takeView(this);
-        if (!isLoadData) {
-            isLoadData = true;
+        if (isFirstLoadData) {
+            isFirstLoadData = false;
             mHomePresenter.initData();
             mHomePresenter.loadGankData(true);
         }
