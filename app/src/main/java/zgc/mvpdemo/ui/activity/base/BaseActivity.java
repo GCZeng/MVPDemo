@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 import zgc.mvpdemo.R;
 
@@ -26,9 +27,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract void initData();
 
+    protected boolean isLoadData = false;//用于判断页面是否加载过一次数据
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(provideContentViewId());
 
@@ -37,8 +41,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             setSupportActionBar(mToolbar);
         }
 
+        ButterKnife.bind(this);
         initView();
-        AndroidInjection.inject(this);
         initData();
     }
 

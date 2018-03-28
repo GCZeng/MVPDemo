@@ -1,11 +1,7 @@
 package zgc.mvpdemo.presenter.home;
 
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +17,6 @@ import zgc.mvpdemo.model.GankDataModel;
 import zgc.mvpdemo.model.entity.GankData;
 import zgc.mvpdemo.presenter.base.BasePresenter;
 import zgc.mvpdemo.service.ApiService;
-import zgc.mvpdemo.ui.activity.PhotoViewActivity;
 import zgc.mvpdemo.ui.adapter.HomeAdapter2;
 import zgc.mvpdemo.ui.contract.HomeContract;
 
@@ -31,7 +26,8 @@ import zgc.mvpdemo.ui.contract.HomeContract;
 public class HomePresenter extends BasePresenter implements HomeContract.Presenter {
     private HomeContract.View view;
 
-    @Inject ApiService apiService;
+    @Inject
+    ApiService apiService;
 
     private int mPage = 1;
 
@@ -40,36 +36,18 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
     private HomeAdapter2 mHomeAdapter = null;
 
     @Inject
-    public HomePresenter(HomeContract.View view, Activity activity) {
-        super(activity);
-        this.view = view;
+    public HomePresenter() {
 
         mHomeList = new ArrayList<>();
 //        mHomeAdapter = new HomeAdapter(mHomeList, context);
         mHomeAdapter = new HomeAdapter2(mHomeList);
 
-        //加载更多
-        mHomeAdapter.setOnLoadMoreListener(() -> {
-            loadMore();
-        }, view.getRefreshView());
 
-        mHomeAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()) {
-                    case R.id.iv_pic:
-                        Bundle bundle = new Bundle();
-                        bundle.putString(PhotoViewPresenter.PHOTO_URL, mHomeList.get(position).getUrl());
-                        goAct(PhotoViewActivity.class, bundle);
-                        break;
-                }
-            }
-        });
-
-        view.setAdapter(mHomeAdapter);
     }
 
+
     public void loadGankData(boolean clean) {
+        view.setAdapter(mHomeAdapter);
         Flowable.zip(apiService.getPicList(APP.pagesize, mPage),
                 apiService.getVideoList(APP.pagesize, mPage),
                 this::createHomeData)
@@ -107,4 +85,32 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
         return picDataModel;
     }
 
+
+    @Override
+    public void initData() {
+        //加载更多
+        mHomeAdapter.setOnLoadMoreListener(() -> {
+            loadMore();
+        }, view.getRefreshView());
+
+        mHomeAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            switch (view.getId()) {
+                case R.id.iv_pic:
+                    Bundle bundle = new Bundle();
+                    bundle.putString(PhotoViewPresenter.PHOTO_URL, mHomeList.get(position).getUrl());
+//                    goAct(PhotoViewActivity.class, bundle);
+                    break;
+            }
+        });
+    }
+
+    @Override
+    public void takeView(HomeContract.View view) {
+        this.view = view;
+    }
+
+    @Override
+    public void dropView() {
+        this.view = null;
+    }
 }

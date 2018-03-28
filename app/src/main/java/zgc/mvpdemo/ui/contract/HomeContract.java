@@ -8,7 +8,7 @@ import zgc.mvpdemo.ui.contract.base.IBaseView;
 /**
  * Created by Nick on 2017/1/7
  */
-public class HomeContract {
+public interface HomeContract {
     public interface View extends IBaseView<Presenter> {
 
         /**
@@ -28,6 +28,7 @@ public class HomeContract {
     }
 
     public interface Presenter extends IBasePresenter<View> {
+        void initData();
     }
 
 }

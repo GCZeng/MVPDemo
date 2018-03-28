@@ -7,6 +7,4 @@ import dagger.Module;
  */
 @Module
 public abstract class AppModule {
-//    @Binds
-//    abstract Context bindContext(Application application);
 }

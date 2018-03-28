@@ -11,13 +11,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import zgc.mvpdemo.R;
 import zgc.mvpdemo.presenter.home.PhotoViewPresenter;
-import zgc.mvpdemo.ui.activity.base.BaseActivity;
+import zgc.mvpdemo.ui.activity.base.BaseDiActivity;
 import zgc.mvpdemo.ui.contract.PhotoViewContract;
 
 /**
  * Created by Nick on 2017/12/7
  */
-public class PhotoViewActivity extends BaseActivity implements PhotoViewContract.View {
+public class PhotoViewActivity extends BaseDiActivity implements PhotoViewContract.View {
     @BindView(R.id.pv_pic) PhotoView pv_pic;
 
     @Inject PhotoViewPresenter mPhotoViewPresenter;

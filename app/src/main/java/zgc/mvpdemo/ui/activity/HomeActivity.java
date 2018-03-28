@@ -7,11 +7,10 @@ import android.util.TypedValue;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
 import zgc.mvpdemo.R;
 import zgc.mvpdemo.presenter.home.HomePresenter;
-import zgc.mvpdemo.ui.activity.base.BaseActivity;
+import zgc.mvpdemo.ui.activity.base.BaseDiActivity;
 import zgc.mvpdemo.ui.adapter.decoration.HomeItemDecoration;
 import zgc.mvpdemo.ui.contract.HomeContract;
 import zgc.mvpdemo.widget.refreshlist.RefreshList;
@@ -19,13 +18,17 @@ import zgc.mvpdemo.widget.refreshlist.RefreshList;
 /**
  * Created by Nick on 2017/12/1
  */
-public class HomeActivity extends BaseActivity implements HomeContract.View {
-    @BindView(R.id.rl_list) RefreshList rl_list;
-    @BindView(R.id.rv_list) RecyclerView rv_list;
+public class HomeActivity extends BaseDiActivity implements HomeContract.View {
+    @BindView(R.id.rl_list)
+    RefreshList rl_list;
+    @BindView(R.id.rv_list)
+    RecyclerView rv_list;
 
-    @Inject HomePresenter mHomePresenter;
+    @Inject
+    HomePresenter mHomePresenter;
 
-    @Inject OkHttpClient mOkHttpClient;
+    @Inject
+    OkHttpClient mOkHttpClient;
 
     @Override
     protected int provideContentViewId() {
@@ -34,7 +37,7 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
 
     @Override
     protected void initView() {
-        ButterKnife.bind(this);
+
 
         setTitle(R.string.app_name);
 
@@ -73,13 +76,13 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
     @Override
     protected void initData() {
         rl_list.setRefreshing(true);
-        mHomePresenter.loadGankData(true);
-
     }
 
     @Override
     public void setAdapter(RecyclerView.Adapter adapter) {
-        rv_list.setAdapter(adapter);
+        if (rv_list.getAdapter() != adapter) {
+            rv_list.setAdapter(adapter);
+        }
     }
 
     @Override
@@ -92,4 +95,20 @@ public class HomeActivity extends BaseActivity implements HomeContract.View {
         return rv_list;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mHomePresenter.takeView(this);
+        if (!isLoadData) {
+            isLoadData = true;
+            mHomePresenter.initData();
+            mHomePresenter.loadGankData(true);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mHomePresenter.dropView();
+    }
 }

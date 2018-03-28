@@ -5,6 +5,7 @@ import android.app.Activity;
 import javax.inject.Inject;
 
 import zgc.mvpdemo.presenter.base.BasePresenter;
+import zgc.mvpdemo.ui.contract.HomeContract;
 import zgc.mvpdemo.ui.contract.PhotoViewContract;
 import zgc.mvpdemo.util.LogUtil;
 import zgc.mvpdemo.util.image.ImageLoader;
@@ -18,17 +19,25 @@ public class PhotoViewPresenter extends BasePresenter implements PhotoViewContra
     public static String PHOTO_URL = "photo_url";
 
     @Inject
-    public PhotoViewPresenter(PhotoViewContract.View view, Activity activity) {
-        super(activity);
-        this.view = view;
+    public PhotoViewPresenter() {
     }
 
 
     @Override
     public void showPhoto() {
-        LogUtil.d(mActivity.getIntent().getStringExtra(PHOTO_URL));
-        ImageLoader.with(mActivity)
-                .url(mActivity.getIntent().getStringExtra(PHOTO_URL))
-                .into(view.getPhotoView());
+//        LogUtil.d(mActivity.getIntent().getStringExtra(PHOTO_URL));
+//        ImageLoader.with(mActivity)
+//                .url(mActivity.getIntent().getStringExtra(PHOTO_URL))
+//                .into(view.getPhotoView());
+    }
+
+    @Override
+    public void takeView(PhotoViewContract.View view) {
+        this.view = view;
+    }
+
+    @Override
+    public void dropView() {
+        this.view = null;
     }
 }

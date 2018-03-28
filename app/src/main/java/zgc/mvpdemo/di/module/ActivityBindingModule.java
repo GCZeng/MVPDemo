@@ -2,8 +2,6 @@ package zgc.mvpdemo.di.module;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import zgc.mvpdemo.di.module.home.HomeModule;
-import zgc.mvpdemo.di.module.home.PhotoViewModule;
 import zgc.mvpdemo.di.scope.ActivityScoped;
 import zgc.mvpdemo.ui.activity.HomeActivity;
 import zgc.mvpdemo.ui.activity.PhotoViewActivity;
@@ -13,11 +11,12 @@ import zgc.mvpdemo.ui.activity.PhotoViewActivity;
  */
 @Module
 public abstract class ActivityBindingModule {
+
     @ActivityScoped
-    @ContributesAndroidInjector(modules = HomeModule.class)
+    @ContributesAndroidInjector(modules = DefaultActivityModule.class)
     abstract HomeActivity homeActivity();
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = PhotoViewModule.class)
+    @ContributesAndroidInjector(modules = DefaultActivityModule.class)
     abstract PhotoViewActivity photoViewActivity();
 }
