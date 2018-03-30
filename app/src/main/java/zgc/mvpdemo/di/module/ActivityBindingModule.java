@@ -5,6 +5,7 @@ import dagger.android.ContributesAndroidInjector;
 import zgc.mvpdemo.di.scope.ActivityScoped;
 import zgc.mvpdemo.ui.activity.HomeActivity;
 import zgc.mvpdemo.ui.activity.PhotoViewActivity;
+import zgc.mvpdemo.ui.activity.PictureViewActivity;
 
 /**
  * Created by Nick on 2017/12/2
@@ -19,4 +20,8 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = DefaultActivityModule.class)
     abstract PhotoViewActivity photoViewActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = DefaultActivityModule.class)
+    abstract PictureViewActivity pictureViewActivity();
 }

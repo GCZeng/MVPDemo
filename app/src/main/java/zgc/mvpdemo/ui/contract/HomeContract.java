@@ -1,5 +1,6 @@
 package zgc.mvpdemo.ui.contract;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 
 import zgc.mvpdemo.presenter.base.IBasePresenter;
@@ -29,6 +30,8 @@ public interface HomeContract {
 
     public interface Presenter extends IBasePresenter<View> {
         void initData();
+
+        void setActivity(Activity activity);
     }
 
 }

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import butterknife.ButterKnife;
@@ -34,7 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(provideContentViewId());
+        if (provideContentViewId() > 0) {
+            setContentView(provideContentViewId());
+        }
 
         mToolbar = findViewById(R.id.toolbar);
         if (mToolbar != null) {
@@ -50,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.mBackListener = backListener;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationOnClickListener(v -> {
-            if(mBackListener!=null){
+            if (mBackListener != null) {
                 mBackListener.click();
             }
         });
@@ -96,17 +99,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         void click();
     }
 
-    protected void hideTitle(){
+    protected void hideTitle() {
         mToolbar.animate()
                 .translationY(-mToolbar.getHeight())
                 .setInterpolator(new AccelerateDecelerateInterpolator());
     }
 
-    protected void showTitle(){
+    protected void showTitle() {
         mToolbar.animate()
                 .translationY(0)
                 .setInterpolator(new AccelerateDecelerateInterpolator());
     }
 
+    protected void setAppBarAlpha(float alpha) {
+        mToolbar.setAlpha(alpha);
+    }
 
+    protected void hideToolbar() {
+        mToolbar.setVisibility(View.GONE);
+    }
 }

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 
 import javax.inject.Inject;
 
@@ -23,11 +23,13 @@ import zgc.mvpdemo.ui.contract.PhotoViewContract;
 /**
  * Created by Nick on 2017/12/7
  */
-@Route(path = "/util/PhotoViewActivity")
-public class PhotoViewActivity extends BaseDiActivity implements PhotoViewContract.View {
+@Route(path = "/util/PictureViewActivity")
+public class PictureViewActivity extends BaseDiActivity implements PhotoViewContract.View {
 
     @BindView(R.id.pv_pic)
-    PhotoView pv_pic;
+    ImageView pv_pic;
+
+    private PhotoViewAttacher mPhotoViewAttacher;
 
     @Inject
     PhotoViewPresenter mPhotoViewPresenter;
@@ -47,7 +49,17 @@ public class PhotoViewActivity extends BaseDiActivity implements PhotoViewContra
 
         showBackPress(() -> finish());
 
-        pv_pic.setOnPhotoTapListener((view, x, y) -> {
+//        pv_pic.setOnPhotoTapListener((view, x, y) -> {
+//            ActionBar actionBar = getSupportActionBar();
+//            if (actionBar.isShowing()) {
+//                actionBar.hide();
+//            } else {
+//                actionBar.show();
+//            }
+//        });
+
+        mPhotoViewAttacher = new PhotoViewAttacher(pv_pic);
+        mPhotoViewAttacher.setOnPhotoTapListener((view, x, y) -> {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar.isShowing()) {
                 actionBar.hide();

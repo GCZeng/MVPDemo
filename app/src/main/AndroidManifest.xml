@@ -22,6 +22,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.PhotoViewActivity"/>
+        <activity android:name=".ui.activity.PictureViewActivity"/>
+        <activity android:name=".ui.common.SchameFilterActivity">
+            <!-- Schame -->
+            <intent-filter>
+                <data
+                    android:host="m.aliyun.com"
+                    android:scheme="arouter"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

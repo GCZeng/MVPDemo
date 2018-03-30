@@ -1,6 +1,7 @@
 package zgc.mvpdemo.ui.contract;
 
 import android.app.Activity;
+import android.widget.ImageView;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -12,7 +13,7 @@ import zgc.mvpdemo.ui.contract.base.IBaseView;
  */
 public class PhotoViewContract {
     public interface View extends IBaseView<Presenter> {
-        PhotoView getPhotoView();
+        ImageView getPhotoView();
     }
 
     public interface Presenter extends IBasePresenter<View> {

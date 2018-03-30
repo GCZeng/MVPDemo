@@ -1,5 +1,6 @@
 package zgc.mvpdemo.ui.activity;
 
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.TypedValue;
@@ -15,6 +16,8 @@ import zgc.mvpdemo.ui.adapter.decoration.HomeItemDecoration;
 import zgc.mvpdemo.ui.contract.HomeContract;
 import zgc.mvpdemo.util.LogUtil;
 import zgc.mvpdemo.widget.refreshlist.RefreshList;
+
+import static android.support.v7.widget.StaggeredGridLayoutManager.GAP_HANDLING_NONE;
 
 /**
  * Created by Nick on 2017/12/1
@@ -53,9 +56,11 @@ public class HomeActivity extends BaseDiActivity implements HomeContract.View {
 
         //设置布局管理器
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager.setGapStrategy(GAP_HANDLING_NONE);
         rv_list.setLayoutManager(layoutManager);
 
         rv_list.addItemDecoration(new HomeItemDecoration(this));
+
         rv_list.setPadding(0, 0, 0, 0);
         rv_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -65,13 +70,13 @@ public class HomeActivity extends BaseDiActivity implements HomeContract.View {
             }
         });
 
-
         //设置adapter
         rv_list.setHasFixedSize(true);
 
         //间隔
 //        rv_list.addItemDecoration(new HomeItemDecoration(this));
 
+        mHomePresenter.setActivity(this);
     }
 
     @Override
